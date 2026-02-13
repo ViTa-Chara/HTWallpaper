@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pathlib
 import platform
+import socket
 import subprocess
 import sys
 import time
@@ -39,7 +40,22 @@ def _create_icon(root: pathlib.Path) -> "Image.Image":
     return image
 
 
-def _start_server(root: pathlib.Path) -> subprocess.Popen:
+def _port_open(host: str, port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.settimeout(0.2)
+        return sock.connect_ex((host, port)) == 0
+
+
+def _pick_server_port(host: str = "127.0.0.1", preferred: int = 8787) -> int:
+    if not _port_open(host, preferred):
+        return preferred
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.bind((host, 0))
+        return int(sock.getsockname()[1])
+
+
+def _start_server(root: pathlib.Path, port: int) -> subprocess.Popen:
     system = platform.system().lower()
     if system == "windows":
         python_exec = root / ".venv" / "Scripts" / "python.exe"
@@ -60,7 +76,7 @@ def _start_server(root: pathlib.Path) -> subprocess.Popen:
         "--host",
         "127.0.0.1",
         "--port",
-        "8787",
+        str(port),
     ]
     _log(root, f"[tray] start server command: {' '.join(command)}")
     popen_kwargs = {
@@ -76,11 +92,11 @@ def _start_server(root: pathlib.Path) -> subprocess.Popen:
     )
 
 
-def _server_ready(timeout_seconds: float = 8.0) -> bool:
+def _server_ready(port: int, timeout_seconds: float = 8.0) -> bool:
     deadline = time.time() + timeout_seconds
     while time.time() < deadline:
         try:
-            with urllib.request.urlopen("http://127.0.0.1:8787/api/status", timeout=1):
+            with urllib.request.urlopen(f"http://127.0.0.1:{port}/api/status", timeout=1):
                 return True
         except Exception:
             time.sleep(0.2)
@@ -91,27 +107,31 @@ def main() -> None:
     root = pathlib.Path(__file__).resolve().parents[1]
     _log(root, "[tray] starting")
     server: subprocess.Popen | None = None
+    server_port = _pick_server_port()
+    guard = threading.Lock()
+    _log(root, f"[tray] selected server port: {server_port}")
 
     def ensure_server(timeout_seconds: float = 8.0) -> bool:
         nonlocal server
-        if _server_ready(timeout_seconds=1.2):
-            return True
+        with guard:
+            if _server_ready(server_port, timeout_seconds=1.2):
+                return True
 
-        should_start = server is None or server.poll() is not None
-        if should_start:
-            try:
-                server = _start_server(root)
-            except Exception:
-                _log(root, "[tray] server start failed")
-                _log(root, traceback.format_exc())
-                return False
-        if _server_ready(timeout_seconds=timeout_seconds):
-            return True
+            should_start = server is None or server.poll() is not None
+            if should_start:
+                try:
+                    server = _start_server(root, server_port)
+                except Exception:
+                    _log(root, "[tray] server start failed")
+                    _log(root, traceback.format_exc())
+                    return False
+            if _server_ready(server_port, timeout_seconds=timeout_seconds):
+                return True
 
-        if server and server.poll() is not None:
-            _log(root, f"[tray] server exited early with code: {server.poll()}")
-        _log(root, "[tray] server not ready")
-        return False
+            if server and server.poll() is not None:
+                _log(root, f"[tray] server exited early with code: {server.poll()}")
+            _log(root, "[tray] server not ready")
+            return False
 
     if ensure_server(timeout_seconds=8.0):
         _log(root, "[tray] server ready")
@@ -122,13 +142,13 @@ def main() -> None:
         if not ensure_server(timeout_seconds=12.0):
             _log(root, "[tray] ui open blocked: server unavailable")
             return
-        webbrowser.open("http://127.0.0.1:8787")
+        webbrowser.open(f"http://127.0.0.1:{server_port}")
 
     def change_wallpaper(_icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None) -> None:
         if not ensure_server(timeout_seconds=8.0):
             _log(root, "[tray] apply blocked: server unavailable")
             return
-        url = "http://127.0.0.1:8787/api/apply"
+        url = f"http://127.0.0.1:{server_port}/api/apply"
         data = urllib.parse.urlencode({}).encode("utf-8")
         request = urllib.request.Request(url, data=data, method="POST")
         try:
