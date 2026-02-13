@@ -91,26 +91,14 @@ class WallpaperScheduler:
             pythonw = base_dir / ".venv" / "Scripts" / "pythonw.exe"
             if not pythonw.exists():
                 pythonw = pathlib.Path(sys.executable)
+            tray_script = base_dir / "app" / "tray.py"
             if enable:
-                startup_cmd = (
-                    f'cmd.exe /c "cd /d \"{base_dir}\" && '
-                    f'\"{pythonw}\" -m app.tray"'
+                command = (
+                    f'schtasks /Create /F /SC ONLOGON /TN {task_name} '
+                    f'/TR "\"{pythonw}\" \"{tray_script}\""'
                 )
-                command = [
-                    "schtasks",
-                    "/Create",
-                    "/F",
-                    "/SC",
-                    "ONLOGON",
-                    "/RL",
-                    "LIMITED",
-                    "/TN",
-                    task_name,
-                    "/TR",
-                    startup_cmd,
-                ]
             else:
-                command = ["schtasks", "/Delete", "/F", "/TN", task_name]
+                command = f'schtasks /Delete /F /TN {task_name}'
             result = subprocess.run(command, check=False, capture_output=True, text=True)
             ok = result.returncode == 0
             return ok, result.stdout.strip() or result.stderr.strip()

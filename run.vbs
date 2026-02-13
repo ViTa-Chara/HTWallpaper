@@ -1,10 +1,8 @@
 Set shell = CreateObject("WScript.Shell")
-Set fso = CreateObject("Scripting.FileSystemObject")
-root = fso.GetParentFolderName(WScript.ScriptFullName)
-shell.CurrentDirectory = root
+root = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName)
 pythonw = root & "\.venv\Scripts\pythonw.exe"
-If fso.FileExists(pythonw) Then
-  shell.Run "\"" & pythonw & "\" -m app.tray", 0
+If CreateObject("Scripting.FileSystemObject").FileExists(pythonw) Then
+  shell.Run """" & pythonw & """ -m app.tray", 0
 Else
   shell.Run "pythonw -m app.tray", 0
 End If

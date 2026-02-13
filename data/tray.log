@@ -413,6 +413,6 @@ ModuleNotFoundError: No module named 'pystray'
 [tray] apply failed
 [tray] apply failed
 [tray] starting
-[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\V2\HTWallpaper\.venv\Scripts\python.exe
-[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\V2\HTWallpaper\HTW.ico
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\HTWallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTWallpaper\HTW.ico
 [tray] icon run
