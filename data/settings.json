@@ -1,0 +1,15 @@
+{
+  "frame_limit": 60,
+  "wallpaper_style": "fill",
+  "video_dir": "E:\\HTWALLPAPER",
+  "schedule_interval_minutes": 30,
+  "schedule_enabled": true,
+  "schedule_tones": [],
+  "max_attempts": 40,
+  "multi_screen_enabled": true,
+  "debug_enabled": true,
+  "compat_mode": false,
+  "debug_mode": true,
+  "multi_screen_mode": "per_monitor_pywin32",
+  "span_layout": "rl"
+}

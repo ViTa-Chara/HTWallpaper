@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTWallpaper</title>
+    <link rel="icon" href="/HTW.ico" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="shell pixel">
+      <header>
+        <div class="brand">
+          <img src="/HTW.ico" alt="HTW" />
+          <div>
+            <h1>HT Wallpaper</h1>
+            <p>上传视频，自动截取新帧并设置壁纸。</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="card">
+        <h2>上传视频</h2>
+        <form id="uploadForm">
+          <input type="file" name="files" multiple accept="video/*" />
+          <button type="submit">上传</button>
+        </form>
+        <div id="uploadResult"></div>
+      </section>
+
+      <section class="card">
+        <h2>视频管理</h2>
+        <button id="refreshVideos">刷新列表</button>
+        <ul id="videoList"></ul>
+      </section>
+
+      <section class="card">
+        <h2>壁纸计划</h2>
+        <form id="scheduleForm">
+          <input type="hidden" name="enable" value="true" />
+          <label>
+            间隔(分钟)
+            <input type="number" name="interval_minutes" value="60" />
+          </label>
+          <div class="tone-group">
+            <span>色调选择</span>
+            <div class="tone-grid">
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="red" />红
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="orange" />橙
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="yellow" />黄
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="green" />绿
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="cyan" />青
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="blue" />蓝
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="purple" />紫
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="pink" />粉
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="neutral" />灰
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="dark" />暗
+              </label>
+            </div>
+          </div>
+          <button type="submit">启用计划</button>
+          <button type="button" id="stopSchedule">停止</button>
+        </form>
+        <div id="scheduleStatus"></div>
+      </section>
+
+      <section class="card">
+        <h2>立即应用</h2>
+        <form id="applyForm">
+          <input type="hidden" name="noop" value="1" />
+          <div class="tone-group">
+            <span>色调选择</span>
+            <div class="tone-grid">
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="red" />红
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="orange" />橙
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="yellow" />黄
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="green" />绿
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="cyan" />青
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="blue" />蓝
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="purple" />紫
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="pink" />粉
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="neutral" />灰
+              </label>
+              <label class="tone-item">
+                <input type="checkbox" name="tones" value="dark" />暗
+              </label>
+            </div>
+          </div>
+          <button type="submit">立即切换</button>
+        </form>
+        <div id="applyStatus"></div>
+      </section>
+
+      <section class="card">
+        <h2>开机启动</h2>
+        <form id="startupForm">
+          <label>
+            启用
+            <select name="enable">
+              <option value="true">启用</option>
+              <option value="false">禁用</option>
+            </select>
+          </label>
+          <button type="submit">更新</button>
+        </form>
+        <div id="startupStatus"></div>
+      </section>
+
+      <section class="card">
+        <h2>设置</h2>
+        <form id="settingsForm">
+          <label>
+            视频文件夹
+            <input type="text" name="video_dir" placeholder="D:\\Videos" />
+          </label>
+          <label>
+            最大采样次数
+            <input type="number" name="max_attempts" value="40" />
+          </label>
+          <label>
+            照片数量上限
+            <input type="number" name="frame_limit" value="60" />
+          </label>
+          <label>
+            默认壁纸模式
+            <select name="wallpaper_style">
+              <option value="fill">填充</option>
+              <option value="fit">适应</option>
+              <option value="stretch">拉伸</option>
+              <option value="center">居中</option>
+              <option value="tile">平铺</option>
+            </select>
+          </label>
+          <label>
+            多屏随机壁纸
+            <input type="checkbox" name="multi_screen_enabled" />
+          </label>
+          <label>
+            多屏模式
+            <select name="multi_screen_mode">
+              <option value="per_monitor_pywin32">每屏独立随机（pywin32）</option>
+              <option value="per_monitor_ctypes">每屏独立随机（ctypes）</option>
+              <option value="span_mosaic">跨屏拼接（Span）</option>
+              <option value="clone">克隆同一张到所有屏</option>
+            </select>
+          </label>
+          <label>
+            跨屏拼接布局
+            <select name="span_layout">
+              <option value="auto">自动（按系统排列）</option>
+              <option value="lr">左屏=第1张，右屏=第2张</option>
+              <option value="rl">右屏=第1张，左屏=第2张</option>
+              <option value="tb">上屏=第1张，下屏=第2张</option>
+            </select>
+          </label>
+          <label>
+            调试模式
+            <input type="checkbox" name="debug_mode" />
+          </label>
+          <button type="submit">保存</button>
+        </form>
+        <div id="settingsStatus"></div>
+      </section>
+
+      <section class="card">
+        <h2>兼容性检测</h2>
+        <button id="checkCompat">检测</button>
+        <div id="compatResult"></div>
+      </section>
+    </main>
+
+    <div id="doctorOverlay" class="overlay" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="doctorTitle">
+        <div class="modal-head">
+          <h2 id="doctorTitle">首次启动检查</h2>
+          <button type="button" id="doctorClose" class="secondary">关闭</button>
+        </div>
+        <p id="doctorIntro" class="muted">
+          检测到当前环境可能存在问题。请按下面的解决方案操作，完成后点击“重新检测”。
+        </p>
+        <div id="doctorBody"></div>
+        <div class="modal-actions">
+          <button type="button" id="doctorRetry">重新检测</button>
+          <button type="button" id="doctorIgnore" class="secondary">本次忽略</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

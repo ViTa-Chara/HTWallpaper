@@ -1,0 +1,415 @@
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] icon failed
+Traceback (most recent call last):
+  File "C:\Users\15105\CascadeProjects\video-wallpaper\app\tray.py", line 77, in main
+    import pystray
+ModuleNotFoundError: No module named 'pystray'
+
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] icon failed
+Traceback (most recent call last):
+  File "C:\Users\15105\CascadeProjects\video-wallpaper\app\tray.py", line 77, in main
+    import pystray
+ModuleNotFoundError: No module named 'pystray'
+
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] icon failed
+Traceback (most recent call last):
+  File "C:\Users\15105\CascadeProjects\video-wallpaper\app\tray.py", line 77, in main
+    import pystray
+ModuleNotFoundError: No module named 'pystray'
+
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] apply failed
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] apply failed
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] apply failed
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] apply failed
+[tray] apply failed
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] apply failed
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] apply failed
+[tray] apply failed
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] starting
+[tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\.venv\Scripts\python.exe
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTW.ico
+[tray] icon run
+[tray] apply failed
+[tray] apply failed
+[tray] apply failed
