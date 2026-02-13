@@ -5,6 +5,7 @@ import platform
 import subprocess
 import sys
 import time
+import threading
 import traceback
 import urllib.parse
 import urllib.request
@@ -61,6 +62,7 @@ def _start_server(root: pathlib.Path) -> subprocess.Popen:
         "--port",
         "8787",
     ]
+    _log(root, f"[tray] start server command: {' '.join(command)}")
     popen_kwargs = {
         "cwd": str(root),
         "stdout": log_path.open("a", encoding="utf-8"),
@@ -89,25 +91,43 @@ def main() -> None:
     root = pathlib.Path(__file__).resolve().parents[1]
     _log(root, "[tray] starting")
     server: subprocess.Popen | None = None
-    if _server_ready(timeout_seconds=1.2):
-        _log(root, "[tray] server already running")
-    else:
-        try:
-            server = _start_server(root)
-        except Exception:
-            _log(root, "[tray] server start failed")
-            _log(root, traceback.format_exc())
-            return
-        if not _server_ready():
-            _log(root, "[tray] server not ready after start")
 
-    def open_ui() -> None:
-        if not _server_ready(timeout_seconds=1.2):
+    def ensure_server(timeout_seconds: float = 8.0) -> bool:
+        nonlocal server
+        if _server_ready(timeout_seconds=1.2):
+            return True
+
+        should_start = server is None or server.poll() is not None
+        if should_start:
+            try:
+                server = _start_server(root)
+            except Exception:
+                _log(root, "[tray] server start failed")
+                _log(root, traceback.format_exc())
+                return False
+        if _server_ready(timeout_seconds=timeout_seconds):
+            return True
+
+        if server and server.poll() is not None:
+            _log(root, f"[tray] server exited early with code: {server.poll()}")
+        _log(root, "[tray] server not ready")
+        return False
+
+    if ensure_server(timeout_seconds=8.0):
+        _log(root, "[tray] server ready")
+    else:
+        _log(root, "[tray] initial server start failed; will retry on demand")
+
+    def open_ui(_icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None) -> None:
+        if not ensure_server(timeout_seconds=12.0):
             _log(root, "[tray] ui open blocked: server unavailable")
             return
         webbrowser.open("http://127.0.0.1:8787")
 
-    def change_wallpaper() -> None:
+    def change_wallpaper(_icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None) -> None:
+        if not ensure_server(timeout_seconds=8.0):
+            _log(root, "[tray] apply blocked: server unavailable")
+            return
         url = "http://127.0.0.1:8787/api/apply"
         data = urllib.parse.urlencode({}).encode("utf-8")
         request = urllib.request.Request(url, data=data, method="POST")
@@ -115,6 +135,7 @@ def main() -> None:
             urllib.request.urlopen(request, timeout=3)
         except Exception:
             _log(root, "[tray] apply failed")
+            _log(root, traceback.format_exc())
 
     def exit_app(icon: pystray.Icon, _item: pystray.MenuItem) -> None:
         icon.stop()
@@ -129,8 +150,18 @@ def main() -> None:
             _create_icon(root),
             title="HTWallpaper",
             menu=pystray.Menu(
-                pystray.MenuItem("打开界面", lambda: open_ui()),
-                pystray.MenuItem("换一张", lambda: change_wallpaper()),
+                pystray.MenuItem(
+                    "打开界面",
+                    lambda icon, item: threading.Thread(
+                        target=open_ui, args=(icon, item), daemon=True
+                    ).start(),
+                ),
+                pystray.MenuItem(
+                    "换一张",
+                    lambda icon, item: threading.Thread(
+                        target=change_wallpaper, args=(icon, item), daemon=True
+                    ).start(),
+                ),
                 pystray.MenuItem("退出", exit_app),
             ),
         )
