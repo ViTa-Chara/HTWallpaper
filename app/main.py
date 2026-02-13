@@ -13,7 +13,6 @@ from .services.scheduler import WallpaperScheduler
 from .services.compat import CompatibilityService
 from .services.video_store import VideoStore
 from .services.settings import SettingsStore
-from .services.doctor import DoctorService
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
@@ -32,7 +31,6 @@ compat_service = CompatibilityService()
 wallpaper_scheduler = WallpaperScheduler(wallpaper_service, compat_service)
 settings_store = SettingsStore(DATA_DIR / "settings.json")
 video_library.set_videos_dir(settings_store.get_video_dir(DATA_DIR / "videos"))
-doctor_service = DoctorService(BASE_DIR, DATA_DIR)
 
 
 @app.on_event("startup")
@@ -135,11 +133,6 @@ def get_status() -> JSONResponse:
             "schedule": wallpaper_scheduler.status(),
         }
     )
-
-
-@app.get("/api/doctor")
-def doctor() -> JSONResponse:
-    return JSONResponse(doctor_service.run())
 
 
 @app.post("/api/schedule")

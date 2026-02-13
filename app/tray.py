@@ -5,7 +5,6 @@ import platform
 import subprocess
 import sys
 import traceback
-import time
 import urllib.parse
 import urllib.request
 import webbrowser
@@ -22,17 +21,6 @@ def _log(root: pathlib.Path, message: str) -> None:
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with log_path.open("a", encoding="utf-8") as handle:
         handle.write(message + "\n")
-
-
-def _show_error(title: str, message: str) -> None:
-    if platform.system().lower() != "windows":
-        return
-    try:
-        import ctypes
-
-        ctypes.windll.user32.MessageBoxW(None, message, title, 0x10)
-    except Exception:
-        return
 
 
 def _create_icon(root: pathlib.Path) -> "Image.Image":
@@ -88,37 +76,11 @@ def _start_server(root: pathlib.Path) -> subprocess.Popen:
 def main() -> None:
     root = pathlib.Path(__file__).resolve().parents[1]
     _log(root, "[tray] starting")
-
-    try:
-        from .services.doctor import DoctorService
-
-        doctor = DoctorService(root, root / "data")
-        report = doctor.run()
-        issues = report.get("issues") or []
-        critical = [item for item in issues if item.get("severity") == "error"]
-        if critical:
-            merged = "\n\n".join(
-                [
-                    f"{item.get('title','')}\n{item.get('details','')}\n\n解决方案:\n{item.get('fix','')}"
-                    for item in critical
-                ]
-            )
-            _log(root, "[tray] doctor found critical issues")
-            _show_error("HTWallpaper 启动失败（环境问题）", merged[:3500])
-            return
-    except Exception:
-        _log(root, "[tray] doctor failed")
-        _log(root, traceback.format_exc())
-
     try:
         server = _start_server(root)
     except Exception:
         _log(root, "[tray] server start failed")
         _log(root, traceback.format_exc())
-        _show_error(
-            "HTWallpaper 启动失败",
-            "服务启动失败。请检查 data/server.log 与 data/tray.log 获取详细错误。",
-        )
         return
 
     def open_ui() -> None:
@@ -140,14 +102,6 @@ def main() -> None:
     try:
         import pystray
 
-        try:
-            # Give the server a brief moment to start, then open UI once so the user
-            # can confirm the app is running even if the tray icon is hidden.
-            time.sleep(0.6)
-            open_ui()
-        except Exception:
-            _log(root, "[tray] open ui failed")
-
         icon = pystray.Icon(
             "HTWallpaper",
             _create_icon(root),
@@ -162,12 +116,7 @@ def main() -> None:
         icon.run()
     except Exception:
         _log(root, "[tray] icon failed")
-        detail = traceback.format_exc()
-        _log(root, detail)
-        _show_error(
-            "HTWallpaper 托盘启动失败",
-            ("托盘图标创建失败。\n\n" + detail)[:3500],
-        )
+        _log(root, traceback.format_exc())
 
 
 if __name__ == "__main__":

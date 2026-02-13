@@ -6,70 +6,6 @@ async function postForm(url, form) {
 
 let debugModeEnabled = false;
 
-const DOCTOR_IGNORE_KEY = "htw_doctor_ignore";
-
-function escapeHtml(raw) {
-  return String(raw)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
-}
-
-function buildIssueHtml(issue) {
-  const severity = issue.severity || "warning";
-  const title = issue.title || "问题";
-  const details = issue.details || "";
-  const fix = issue.fix || "";
-  return `
-    <div class="issue">
-      <h3 class="issue-title">${escapeHtml(title)}</h3>
-      <div class="issue-meta">级别: ${escapeHtml(severity)}</div>
-      <pre>${escapeHtml(details)}</pre>
-      <pre>${escapeHtml(fix)}</pre>
-    </div>
-  `;
-}
-
-function showDoctorModal(report) {
-  const overlay = document.getElementById("doctorOverlay");
-  const body = document.getElementById("doctorBody");
-  if (!overlay || !body) {
-    return;
-  }
-  const issues = (report && report.issues) || [];
-  body.innerHTML = issues.map((item) => buildIssueHtml(item)).join("");
-  overlay.hidden = false;
-}
-
-function hideDoctorModal() {
-  const overlay = document.getElementById("doctorOverlay");
-  if (overlay) {
-    overlay.hidden = true;
-  }
-}
-
-async function runDoctor({ force = false } = {}) {
-  if (!force) {
-    const ignoreFlag = localStorage.getItem(DOCTOR_IGNORE_KEY);
-    if (ignoreFlag === "1") {
-      return;
-    }
-  }
-  let result = null;
-  try {
-    const response = await fetch("/api/doctor");
-    result = await response.json();
-  } catch (err) {
-    return;
-  }
-  const issues = (result && result.issues) || [];
-  if (!issues.length) {
-    hideDoctorModal();
-    return;
-  }
-  showDoctorModal(result);
-}
-
 function render(targetId, payload) {
   const target = document.getElementById(targetId);
   if (!target) {
@@ -247,28 +183,5 @@ async function loadSettings() {
   }
 }
 
-const doctorClose = document.getElementById("doctorClose");
-const doctorRetry = document.getElementById("doctorRetry");
-const doctorIgnore = document.getElementById("doctorIgnore");
-
-if (doctorClose) {
-  doctorClose.addEventListener("click", () => {
-    hideDoctorModal();
-  });
-}
-if (doctorRetry) {
-  doctorRetry.addEventListener("click", async () => {
-    localStorage.removeItem(DOCTOR_IGNORE_KEY);
-    await runDoctor({ force: true });
-  });
-}
-if (doctorIgnore) {
-  doctorIgnore.addEventListener("click", () => {
-    localStorage.setItem(DOCTOR_IGNORE_KEY, "1");
-    hideDoctorModal();
-  });
-}
-
 loadVideos();
 loadSettings();
-runDoctor();

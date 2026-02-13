@@ -7,8 +7,4 @@ if %errorLevel% neq 0 (
 )
 cd /d %~dp0
 set ROOT=%~dp0
-powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%bootstrap.ps1" -Root "%ROOT%"
-if %errorlevel% neq 0 (
-  start notepad "%ROOT%data\run.log"
-)
-
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$root='%ROOT%'; $log=Join-Path $root 'data\run.log'; New-Item -ItemType Directory -Path (Join-Path $root 'data') -Force | Out-Null; Add-Content $log ('[' + (Get-Date) + '] start'); $pyw=Join-Path $root '.venv\Scripts\pythonw.exe'; $py=Join-Path $root '.venv\Scripts\python.exe'; if (!(Test-Path $pyw)) { $pyw=$py } if (!(Test-Path $pyw)) { $pyw='pythonw.exe' } Add-Content $log ('[' + (Get-Date) + '] python=' + $pyw); $p=Start-Process -FilePath $pyw -ArgumentList '-m','app.tray' -WorkingDirectory $root -WindowStyle Hidden -PassThru; Add-Content $log ('[' + (Get-Date) + '] pid=' + $p.Id)"
