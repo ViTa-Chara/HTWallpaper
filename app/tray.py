@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+import os
 import pathlib
 import platform
 import socket
 import subprocess
 import sys
-import time
 import threading
+import time
 import traceback
 import urllib.parse
 import urllib.request
@@ -17,6 +18,9 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     import pystray
     from PIL import Image
+
+SERVER_HOST = "127.0.0.1"
+SERVER_PORT = 8787
 
 
 def _log(root: pathlib.Path, message: str) -> None:
@@ -74,7 +78,7 @@ def _start_server(root: pathlib.Path, port: int) -> subprocess.Popen:
         "uvicorn",
         "app.main:app",
         "--host",
-        "127.0.0.1",
+        SERVER_HOST,
         "--port",
         str(port),
     ]
@@ -86,10 +90,7 @@ def _start_server(root: pathlib.Path, port: int) -> subprocess.Popen:
     }
     if system == "windows":
         popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
-    return subprocess.Popen(
-        command,
-        **popen_kwargs,
-    )
+    return subprocess.Popen(command, **popen_kwargs)
 
 
 def _server_ready(port: int, timeout_seconds: float = 8.0) -> bool:
@@ -102,6 +103,36 @@ def _server_ready(port: int, timeout_seconds: float = 8.0) -> bool:
             time.sleep(0.2)
     return False
 
+
+
+
+def _open_browser_url(root: pathlib.Path, url: str) -> bool:
+    try:
+        opened = webbrowser.open(url)
+        _log(root, f"[tray] browser open via webbrowser: {opened}")
+        if opened:
+            return True
+    except Exception:
+        _log(root, "[tray] webbrowser.open failed")
+        _log(root, traceback.format_exc())
+
+    system = platform.system().lower()
+    try:
+        if system == "windows":
+            os.startfile(url)
+            _log(root, "[tray] browser open via os.startfile")
+            return True
+        if system == "darwin":
+            subprocess.Popen(["open", url])
+            _log(root, "[tray] browser open via open")
+            return True
+        subprocess.Popen(["xdg-open", url])
+        _log(root, "[tray] browser open via xdg-open")
+        return True
+    except Exception:
+        _log(root, "[tray] browser fallback open failed")
+        _log(root, traceback.format_exc())
+        return False
 
 def main() -> None:
     root = pathlib.Path(__file__).resolve().parents[1]
@@ -138,13 +169,17 @@ def main() -> None:
     else:
         _log(root, "[tray] initial server start failed; will retry on demand")
 
-    def open_ui(_icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None) -> None:
+    def open_ui(
+        _icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None
+    ) -> None:
         if not ensure_server(timeout_seconds=12.0):
             _log(root, "[tray] ui open blocked: server unavailable")
             return
         webbrowser.open(f"http://127.0.0.1:{server_port}")
 
-    def change_wallpaper(_icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None) -> None:
+    def change_wallpaper(
+        _icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None
+    ) -> None:
         if not ensure_server(timeout_seconds=8.0):
             _log(root, "[tray] apply blocked: server unavailable")
             return
