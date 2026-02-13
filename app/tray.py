@@ -4,6 +4,7 @@ import pathlib
 import platform
 import subprocess
 import sys
+import time
 import traceback
 import urllib.parse
 import urllib.request
@@ -73,17 +74,37 @@ def _start_server(root: pathlib.Path) -> subprocess.Popen:
     )
 
 
+def _server_ready(timeout_seconds: float = 8.0) -> bool:
+    deadline = time.time() + timeout_seconds
+    while time.time() < deadline:
+        try:
+            with urllib.request.urlopen("http://127.0.0.1:8787/api/status", timeout=1):
+                return True
+        except Exception:
+            time.sleep(0.2)
+    return False
+
+
 def main() -> None:
     root = pathlib.Path(__file__).resolve().parents[1]
     _log(root, "[tray] starting")
-    try:
-        server = _start_server(root)
-    except Exception:
-        _log(root, "[tray] server start failed")
-        _log(root, traceback.format_exc())
-        return
+    server: subprocess.Popen | None = None
+    if _server_ready(timeout_seconds=1.2):
+        _log(root, "[tray] server already running")
+    else:
+        try:
+            server = _start_server(root)
+        except Exception:
+            _log(root, "[tray] server start failed")
+            _log(root, traceback.format_exc())
+            return
+        if not _server_ready():
+            _log(root, "[tray] server not ready after start")
 
     def open_ui() -> None:
+        if not _server_ready(timeout_seconds=1.2):
+            _log(root, "[tray] ui open blocked: server unavailable")
+            return
         webbrowser.open("http://127.0.0.1:8787")
 
     def change_wallpaper() -> None:
@@ -97,7 +118,8 @@ def main() -> None:
 
     def exit_app(icon: pystray.Icon, _item: pystray.MenuItem) -> None:
         icon.stop()
-        server.terminate()
+        if server and server.poll() is None:
+            server.terminate()
 
     try:
         import pystray
