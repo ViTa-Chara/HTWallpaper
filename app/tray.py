@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import os
 import pathlib
 import platform
+import socket
 import subprocess
 import sys
-import time
 import threading
+import time
 import traceback
 import urllib.parse
 import urllib.request
@@ -16,6 +18,9 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     import pystray
     from PIL import Image
+
+SERVER_HOST = "127.0.0.1"
+SERVER_PORT = 8787
 
 
 def _log(root: pathlib.Path, message: str) -> None:
@@ -39,6 +44,12 @@ def _create_icon(root: pathlib.Path) -> "Image.Image":
     return image
 
 
+def _port_open(host: str, port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.settimeout(0.2)
+        return sock.connect_ex((host, port)) == 0
+
+
 def _start_server(root: pathlib.Path) -> subprocess.Popen:
     system = platform.system().lower()
     if system == "windows":
@@ -58,9 +69,9 @@ def _start_server(root: pathlib.Path) -> subprocess.Popen:
         "uvicorn",
         "app.main:app",
         "--host",
-        "127.0.0.1",
+        SERVER_HOST,
         "--port",
-        "8787",
+        str(SERVER_PORT),
     ]
     _log(root, f"[tray] start server command: {' '.join(command)}")
     popen_kwargs = {
@@ -70,65 +81,111 @@ def _start_server(root: pathlib.Path) -> subprocess.Popen:
     }
     if system == "windows":
         popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
-    return subprocess.Popen(
-        command,
-        **popen_kwargs,
-    )
+    return subprocess.Popen(command, **popen_kwargs)
 
 
 def _server_ready(timeout_seconds: float = 8.0) -> bool:
     deadline = time.time() + timeout_seconds
     while time.time() < deadline:
         try:
-            with urllib.request.urlopen("http://127.0.0.1:8787/api/status", timeout=1):
+            with urllib.request.urlopen(
+                f"http://{SERVER_HOST}:{SERVER_PORT}/api/status", timeout=1
+            ):
                 return True
         except Exception:
             time.sleep(0.2)
     return False
 
 
+
+
+def _open_browser_url(root: pathlib.Path, url: str) -> bool:
+    try:
+        opened = webbrowser.open(url)
+        _log(root, f"[tray] browser open via webbrowser: {opened}")
+        if opened:
+            return True
+    except Exception:
+        _log(root, "[tray] webbrowser.open failed")
+        _log(root, traceback.format_exc())
+
+    system = platform.system().lower()
+    try:
+        if system == "windows":
+            os.startfile(url)
+            _log(root, "[tray] browser open via os.startfile")
+            return True
+        if system == "darwin":
+            subprocess.Popen(["open", url])
+            _log(root, "[tray] browser open via open")
+            return True
+        subprocess.Popen(["xdg-open", url])
+        _log(root, "[tray] browser open via xdg-open")
+        return True
+    except Exception:
+        _log(root, "[tray] browser fallback open failed")
+        _log(root, traceback.format_exc())
+        return False
+
 def main() -> None:
     root = pathlib.Path(__file__).resolve().parents[1]
     _log(root, "[tray] starting")
     server: subprocess.Popen | None = None
+    guard = threading.Lock()
 
     def ensure_server(timeout_seconds: float = 8.0) -> bool:
         nonlocal server
-        if _server_ready(timeout_seconds=1.2):
-            return True
+        with guard:
+            if _server_ready(timeout_seconds=1.2):
+                return True
 
-        should_start = server is None or server.poll() is not None
-        if should_start:
+            if server and server.poll() is None:
+                if _server_ready(timeout_seconds=timeout_seconds):
+                    return True
+                _log(root, "[tray] tracked server process running but status check failed")
+                return False
+
+            if _port_open(SERVER_HOST, SERVER_PORT):
+                _log(root, "[tray] port 8787 is occupied but /api/status is unavailable")
+                return False
+
             try:
                 server = _start_server(root)
             except Exception:
                 _log(root, "[tray] server start failed")
                 _log(root, traceback.format_exc())
                 return False
-        if _server_ready(timeout_seconds=timeout_seconds):
-            return True
 
-        if server and server.poll() is not None:
-            _log(root, f"[tray] server exited early with code: {server.poll()}")
-        _log(root, "[tray] server not ready")
-        return False
+            if _server_ready(timeout_seconds=timeout_seconds):
+                return True
+
+            if server and server.poll() is not None:
+                _log(root, f"[tray] server exited early with code: {server.poll()}")
+            _log(root, "[tray] server not ready")
+            return False
 
     if ensure_server(timeout_seconds=8.0):
         _log(root, "[tray] server ready")
     else:
         _log(root, "[tray] initial server start failed; will retry on demand")
 
-    def open_ui(_icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None) -> None:
+    def open_ui(
+        _icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None
+    ) -> None:
         if not ensure_server(timeout_seconds=12.0):
             _log(root, "[tray] ui open blocked: server unavailable")
             return
-        webbrowser.open("http://127.0.0.1:8787")
+        url = f"http://{SERVER_HOST}:{SERVER_PORT}"
+        if not _open_browser_url(root, url):
+            _log(root, "[tray] ui open failed: browser launch error")
 
-    def change_wallpaper(_icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None) -> None:
+    def change_wallpaper(
+        _icon: pystray.Icon | None = None, _item: pystray.MenuItem | None = None
+    ) -> None:
         if not ensure_server(timeout_seconds=8.0):
             _log(root, "[tray] apply blocked: server unavailable")
             return
-        url = "http://127.0.0.1:8787/api/apply"
+        url = f"http://{SERVER_HOST}:{SERVER_PORT}/api/apply"
         data = urllib.parse.urlencode({}).encode("utf-8")
         request = urllib.request.Request(url, data=data, method="POST")
         try:
