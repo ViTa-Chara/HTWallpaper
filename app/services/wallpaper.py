@@ -259,13 +259,14 @@ class WallpaperService:
             return None
         target_dir = self.frames_dir / "_live"
         target_dir.mkdir(parents=True, exist_ok=True)
-        self._cleanup_temp(target_dir)
+        # Don't cleanup here - it may delete frames just created by pick_random_frames
         tones = [tone.strip().lower() for tone in (tones or []) if tone.strip()]
         max_attempts = max(attempts, 1)
         if tones:
             for _ in range(max_attempts):
                 position = random.uniform(0, duration)
-                output_path = target_dir / f"live_{int(time.time() * 1000)}.jpg"
+                # Use timestamp + random to ensure unique filename
+                output_path = target_dir / f"live_{int(time.time() * 1000)}_{random.randint(0, 9999)}.jpg"
                 command = [
                     "ffmpeg",
                     "-y",
@@ -288,7 +289,8 @@ class WallpaperService:
             tones = []
         for _ in range(max_attempts if not tones else 1):
             position = random.uniform(0, duration)
-            output_path = target_dir / f"live_{int(time.time() * 1000)}.jpg"
+            # Use timestamp + random to ensure unique filename
+            output_path = target_dir / f"live_{int(time.time() * 1000)}_{random.randint(0, 9999)}.jpg"
             command = [
                 "ffmpeg",
                 "-y",
@@ -475,7 +477,9 @@ class WallpaperService:
         self, image_path: pathlib.Path, style: str
     ) -> tuple[bool, str]:
         self._apply_style(style)
-        result = ctypes.windll.user32.SystemParametersInfoW(20, 0, str(image_path), 3)
+        # Must use absolute path for SystemParametersInfoW
+        abs_path = str(pathlib.Path(image_path).resolve())
+        result = ctypes.windll.user32.SystemParametersInfoW(20, 0, abs_path, 3)
         return bool(result), "ok" if result else "设置失败"
 
     def _set_wallpaper_windows_multi(
@@ -503,7 +507,9 @@ class WallpaperService:
             for idx in range(count):
                 monitor_id = desktop.GetMonitorDevicePathAt(idx)
                 image_path = image_paths[idx % len(image_paths)]
-                desktop.SetWallpaper(monitor_id, str(image_path))
+                # Must use absolute path for SetWallpaper
+                abs_path = str(pathlib.Path(image_path).resolve())
+                desktop.SetWallpaper(monitor_id, abs_path)
             return True
         finally:
             pythoncom.CoUninitialize()

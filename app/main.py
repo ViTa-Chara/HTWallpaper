@@ -121,7 +121,39 @@ def extract_frames(
 @app.post("/api/set")
 def set_wallpaper(frame_name: str = Form(...)) -> JSONResponse:
     path = wallpaper_service.frames_dir / frame_name
-    ok, message = wallpaper_service.set_wallpaper(path, settings_store.get_style())
+    if not path.exists():
+        return JSONResponse({"ok": False, "message": "图片不存在"})
+    style_value = settings_store.get_style()
+    multi_screen_enabled = settings_store.get_multi_screen_enabled()
+    if multi_screen_enabled:
+        mode_value = settings_store.get_multi_screen_mode()
+        span_layout_value = settings_store.get_span_layout()
+        screen_count = wallpaper_service.get_screen_count()
+        # Collect existing frames from frames directory
+        existing_frames = list(wallpaper_service.frames_dir.rglob("*.jpg"))
+        # Filter out _live directory frames (temporary)
+        existing_frames = [f for f in existing_frames if "_live" not in str(f)]
+        if len(existing_frames) >= screen_count:
+            # Pick different frames including the selected one
+            import random
+            frames = [path]
+            available = [f for f in existing_frames if f != path]
+            random.shuffle(available)
+            for f in available:
+                if len(frames) >= screen_count:
+                    break
+                frames.append(f)
+        else:
+            # Not enough frames, use the selected one for all
+            frames = [path] * screen_count
+        ok, message = wallpaper_service.set_wallpapers(
+            frames,
+            style_value,
+            mode=mode_value,
+            span_layout=span_layout_value,
+        )
+    else:
+        ok, message = wallpaper_service.set_wallpaper(path, style_value)
     return JSONResponse({"ok": ok, "message": message})
 
 
