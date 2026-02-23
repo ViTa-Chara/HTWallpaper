@@ -37,21 +37,33 @@ def _create_icon(root: pathlib.Path) -> "Image.Image":
     return image
 
 
-def _start_server(root: pathlib.Path) -> subprocess.Popen:
+def _find_uv(root: pathlib.Path) -> str:
+    """Find uv executable (system or local)."""
+    # Check system uv
+    result = subprocess.run(["uv", "--version"], capture_output=True)
+    if result.returncode == 0:
+        return "uv"
+    # Check local uv
     system = platform.system().lower()
     if system == "windows":
-        python_exec = root / ".venv" / "Scripts" / "python.exe"
+        local_uv = root / ".uv" / "uv.exe"
     else:
-        python_exec = root / ".venv" / "bin" / "python3"
-        if not python_exec.exists():
-            python_exec = root / ".venv" / "bin" / "python"
-    if not python_exec.exists():
-        python_exec = pathlib.Path(sys.executable)
-    _log(root, f"[tray] start server using: {python_exec}")
+        local_uv = root / ".uv" / "uv"
+    if local_uv.exists():
+        return str(local_uv)
+    # Fallback to system uv
+    return "uv"
+
+
+def _start_server(root: pathlib.Path) -> subprocess.Popen:
+    uv = _find_uv(root)
+    _log(root, f"[tray] start server using: {uv}")
     log_path = root / "data" / "server.log"
     log_path.parent.mkdir(parents=True, exist_ok=True)
     command = [
-        str(python_exec),
+        uv,
+        "run",
+        "--no-dev",
         "-m",
         "uvicorn",
         "app.main:app",
@@ -65,6 +77,7 @@ def _start_server(root: pathlib.Path) -> subprocess.Popen:
         "stdout": log_path.open("a", encoding="utf-8"),
         "stderr": log_path.open("a", encoding="utf-8"),
     }
+    system = platform.system().lower()
     if system == "windows":
         popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
     return subprocess.Popen(

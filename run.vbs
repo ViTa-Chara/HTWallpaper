@@ -1,8 +1,13 @@
 Set shell = CreateObject("WScript.Shell")
-root = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName)
-pythonw = root & "\.venv\Scripts\pythonw.exe"
-If CreateObject("Scripting.FileSystemObject").FileExists(pythonw) Then
-  shell.Run """" & pythonw & """ -m app.tray", 0
-Else
-  shell.Run "pythonw -m app.tray", 0
+Set fso = CreateObject("Scripting.FileSystemObject")
+root = fso.GetParentFolderName(WScript.ScriptFullName)
+
+' Check for uv (system or local)
+uv = "uv"
+localUv = root & "\.uv\uv.exe"
+If fso.FileExists(localUv) Then
+  uv = localUv
 End If
+
+' Run with uv run
+shell.Run """" & uv & """ run --no-dev -m app.tray", 0

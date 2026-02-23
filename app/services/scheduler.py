@@ -83,19 +83,33 @@ class WallpaperScheduler:
             "span_layout": self._span_layout,
         }
 
+    def _find_uv(self, base_dir: pathlib.Path) -> str:
+        """Find uv executable (system or local)."""
+        # Check system uv
+        result = subprocess.run(["uv", "--version"], capture_output=True)
+        if result.returncode == 0:
+            return "uv"
+        # Check local uv
+        system = platform.system().lower()
+        if system == "windows":
+            local_uv = base_dir / ".uv" / "uv.exe"
+        else:
+            local_uv = base_dir / ".uv" / "uv"
+        if local_uv.exists():
+            return str(local_uv)
+        # Fallback to system uv
+        return "uv"
+
     def configure_startup(self, enable: bool) -> tuple[bool, str]:
         system = platform.system().lower()
         if system == "windows":
             task_name = "HTWallpaper"
             base_dir = pathlib.Path(__file__).resolve().parents[2]
-            pythonw = base_dir / ".venv" / "Scripts" / "pythonw.exe"
-            if not pythonw.exists():
-                pythonw = pathlib.Path(sys.executable)
-            tray_script = base_dir / "app" / "tray.py"
+            uv = self._find_uv(base_dir)
             if enable:
                 command = (
                     f'schtasks /Create /F /SC ONLOGON /TN {task_name} '
-                    f'/TR "\"{pythonw}\" \"{tray_script}\""'
+                    f'/TR "\"{uv}\" run --no-dev -m app.tray"'
                 )
             else:
                 command = f'schtasks /Delete /F /TN {task_name}'
@@ -104,11 +118,7 @@ class WallpaperScheduler:
             return ok, result.stdout.strip() or result.stderr.strip()
         if system == "darwin":
             base_dir = pathlib.Path(__file__).resolve().parents[2]
-            python_exec = base_dir / ".venv" / "bin" / "python3"
-            if not python_exec.exists():
-                python_exec = base_dir / ".venv" / "bin" / "python"
-            if not python_exec.exists():
-                python_exec = pathlib.Path(sys.executable)
+            uv = self._find_uv(base_dir)
             label = "com.htwallpaper.app"
             launch_dir = pathlib.Path.home() / "Library" / "LaunchAgents"
             launch_dir.mkdir(parents=True, exist_ok=True)
@@ -118,7 +128,7 @@ class WallpaperScheduler:
             if enable:
                 payload = {
                     "Label": label,
-                    "ProgramArguments": [str(python_exec), "-m", "app.tray"],
+                    "ProgramArguments": [uv, "run", "--no-dev", "-m", "app.tray"],
                     "WorkingDirectory": str(base_dir),
                     "RunAtLoad": True,
                     "KeepAlive": True,

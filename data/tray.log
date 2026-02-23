@@ -2,3 +2,7 @@
 [tray] start server using: C:\Users\15105\CascadeProjects\video-wallpaper\HTWallpaper\.venv\Scripts\python.exe
 [tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTWallpaper\HTW.ico
 [tray] icon run
+[tray] starting
+[tray] start server using: uv
+[tray] load icon: C:\Users\15105\CascadeProjects\video-wallpaper\HTWallpaper\HTW.ico
+[tray] icon run

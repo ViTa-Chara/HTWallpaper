@@ -7,4 +7,20 @@ if %errorLevel% neq 0 (
 )
 cd /d %~dp0
 set ROOT=%~dp0
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$root='%ROOT%'; $log=Join-Path $root 'data\run.log'; New-Item -ItemType Directory -Path (Join-Path $root 'data') -Force | Out-Null; Add-Content $log ('[' + (Get-Date) + '] start'); $pyw=Join-Path $root '.venv\Scripts\pythonw.exe'; $py=Join-Path $root '.venv\Scripts\python.exe'; if (!(Test-Path $pyw)) { $pyw=$py } if (!(Test-Path $pyw)) { $pyw='pythonw.exe' } Add-Content $log ('[' + (Get-Date) + '] python=' + $pyw); $p=Start-Process -FilePath $pyw -ArgumentList '-m','app.tray' -WorkingDirectory $root -WindowStyle Hidden -PassThru; Add-Content $log ('[' + (Get-Date) + '] pid=' + $p.Id)"
+
+:: Check if uv is available
+where uv >nul 2>&1
+if %errorLevel% neq 0 (
+  :: Try local uv
+  set "UV=%ROOT%.uv\uv.exe"
+  if not exist "%UV%" (
+    echo [ERROR] uv not found. Please run setup.bat first.
+    pause
+    exit /b 1
+  )
+) else (
+  set "UV=uv"
+)
+
+:: Start tray app with uv run
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$root='%ROOT%'; $log=Join-Path $root 'data\run.log'; New-Item -ItemType Directory -Path (Join-Path $root 'data') -Force | Out-Null; Add-Content $log ('[' + (Get-Date) + '] start'); $uv=if ($env:UV) { $env:UV } else { 'uv' }; Add-Content $log ('[' + (Get-Date) + '] uv=' + $uv); $p=Start-Process -FilePath $uv -ArgumentList 'run','--no-dev','-m','app.tray' -WorkingDirectory $root -WindowStyle Hidden -PassThru; Add-Content $log ('[' + (Get-Date) + '] pid=' + $p.Id)"
