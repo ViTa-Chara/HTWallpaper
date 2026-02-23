@@ -21,10 +21,57 @@ Traceback (most recent call last):
     buffer.append(fh.read())
 UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 77: illegal multibyte sequence
 INFO:     127.0.0.1:40219 - "POST /api/apply HTTP/1.1" 200 OK
- application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:8787 (Press CTRL+C to quit)
-Exception in thread Thread-8 (_readerthread):
+INFO:     127.0.0.1:36626 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49776 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36626 - "GET /api/videos HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17246 - "POST /api/schedule HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17246 - "POST /api/schedule HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17246 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13300 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63546 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13300 - "GET /api/videos HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64455 - "POST /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64455 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64455 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35737 - "POST /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35737 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35737 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1099 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1099 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8134 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33449 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8134 - "GET /api/videos HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9035 - "POST /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9035 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9035 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53216 - "POST /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53216 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53216 - "POST /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53216 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53216 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53216 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10685 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10717 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40422 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49713 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40422 - "GET /api/videos HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4321 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65176 - "POST /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65176 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65176 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65176 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48114 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48121 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8213 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10639 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8213 - "GET /api/videos HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40307 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40307 - "POST /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40307 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40307 - "POST /api/apply HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40307 - "POST /api/apply HTTP/1.1" 200 OK
+odec can't decode byte 0xa6 in position 69: illegal multibyte sequence
+Exception in thread Thread-174 (_readerthread):
 Traceback (most recent call last):
   File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 1016, in _bootstrap_inner
     self.run()
@@ -32,4 +79,49 @@ Traceback (most recent call last):
     self._target(*self._args, **self._kwargs)
   File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\subprocess.py", line 1497, in _readerthread
     buffer.append(fh.read())
-UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 77: illegal multibyte sequence
+UnicodeDecodeError: 'gbk' codec can't decode byte 0xa6 in position 69: illegal multibyte sequence
+Exception in thread Thread-188 (_readerthread):
+Traceback (most recent call last):
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\subprocess.py", line 1497, in _readerthread
+    buffer.append(fh.read())
+UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 31: illegal multibyte sequence
+Exception in thread Thread-190 (_readerthread):
+Traceback (most recent call last):
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\subprocess.py", line 1497, in _readerthread
+    buffer.append(fh.read())
+UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 71: illegal multibyte sequence
+Exception in thread Thread-198 (_readerthread):
+Traceback (most recent call last):
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\subprocess.py", line 1497, in _readerthread
+    buffer.append(fh.read())
+UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 71: illegal multibyte sequence
+Exception in thread Thread-212 (_readerthread):
+Traceback (most recent call last):
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\subprocess.py", line 1497, in _readerthread
+    buffer.append(fh.read())
+UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 71: illegal multibyte sequence
+Exception in thread Thread-256 (_readerthread):
+Traceback (most recent call last):
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\15105\AppData\Local\Programs\Python\Python310\lib\subprocess.py", line 1497, in _readerthread
+    buffer.append(fh.read())
+UnicodeDecodeError: 'gbk' codec can't decode byte 0x91 in position 112: illegal multibyte sequence

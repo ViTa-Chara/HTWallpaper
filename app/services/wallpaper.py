@@ -119,6 +119,7 @@ class WallpaperService:
         if platform.system().lower() != "windows":
             return rects
 
+        # Try win32com first (may not work on Windows Home edition)
         if win32com is not None:
             try:
                 pythoncom.CoInitialize()
@@ -128,17 +129,17 @@ class WallpaperService:
                     monitor_id = desktop.GetMonitorDevicePathAt(idx)
                     left, top, right, bottom = desktop.GetMonitorRect(monitor_id)
                     rects.append((int(left), int(top), int(right), int(bottom)))
-                return rects
+                if rects:  # Only return if we got valid data
+                    return rects
             except Exception:
-                return rects
+                pass  # Fall through to ctypes fallback
             finally:
                 try:
                     pythoncom.CoUninitialize()
                 except Exception:
                     pass
 
-        MONITORINFOF_PRIMARY = 0x1
-
+        # Fallback: Use EnumDisplayMonitors (works on all Windows versions)
         class RECT(ctypes.Structure):
             _fields_ = [
                 ("left", ctypes.c_long),
@@ -640,6 +641,10 @@ class WallpaperService:
         image_paths: list[pathlib.Path],
         style: str = "fill",
     ) -> bool:
+        # Use windll instead of OleDLL for proper function signatures
+        ole32 = ctypes.windll.ole32
+
+        # Initialize GUID structure
         class GUID(ctypes.Structure):
             _fields_ = [
                 ("Data1", ctypes.c_ulong),
@@ -648,28 +653,14 @@ class WallpaperService:
                 ("Data4", ctypes.c_ubyte * 8),
             ]
 
-            def __init__(self, value: str):
-                import uuid
+        # CLSID and IID
+        CLSID_DesktopWallpaper = GUID()
+        IID_IDesktopWallpaper = GUID()
+        IID_IClassFactory = GUID()
 
-                guid = uuid.UUID(value)
-                ctypes.Structure.__init__(self)
-                self.Data1 = guid.time_low
-                self.Data2 = guid.time_mid
-                self.Data3 = guid.time_hi_version
-                for idx, byte in enumerate(guid.bytes[8:]):
-                    self.Data4[idx] = byte
-
-        CLSID_DesktopWallpaper = GUID("{C2CF3110-460E-4FC1-B9D0-8A1C0C9CC4BD}")
-        IID_IDesktopWallpaper = GUID("{B92B56A9-8B55-4E14-9A89-0199BBB6F93B}")
-
-        ole32 = ctypes.OleDLL("ole32")
-        CoInitializeEx = ole32.CoInitializeEx
-        CoUninitialize = ole32.CoUninitialize
-        CoCreateInstance = ole32.CoCreateInstance
-        CoTaskMemFree = ole32.CoTaskMemFree
-
-        COINIT_APARTMENTTHREADED = 0x2
-        CLSCTX_INPROC_SERVER = 0x1
+        ole32.CLSIDFromString("{C2CF3110-460E-4FC1-B9D0-8A1C0C9CC4BD}", ctypes.byref(CLSID_DesktopWallpaper))
+        ole32.IIDFromString("{B92B56A9-8B55-4E14-9A89-0199BBB6F93B}", ctypes.byref(IID_IDesktopWallpaper))
+        ole32.IIDFromString("{00000001-0000-0000-C000-000000000046}", ctypes.byref(IID_IClassFactory))
 
         position_map = {
             "center": 0,
@@ -681,30 +672,53 @@ class WallpaperService:
         }
         position_value = position_map.get(style, 4)
 
-        hr_init = CoInitializeEx(None, COINIT_APARTMENTTHREADED)
+        # Initialize COM in STA mode
+        hr_init = ole32.CoInitializeEx(None, 0x2)
         try:
-            instance = ctypes.c_void_p()
-            hr = CoCreateInstance(
+            # Get class factory first (CoCreateInstance fails on some systems)
+            CLSCTX_ALL = 0x17
+            class_factory = ctypes.c_void_p()
+            hr = ole32.CoGetClassObject(
                 ctypes.byref(CLSID_DesktopWallpaper),
+                CLSCTX_ALL,
                 None,
-                CLSCTX_INPROC_SERVER,
-                ctypes.byref(IID_IDesktopWallpaper),
-                ctypes.byref(instance),
+                ctypes.byref(IID_IClassFactory),
+                ctypes.byref(class_factory),
             )
-            if hr != 0:
+            if hr != 0 or not class_factory.value:
                 return False
 
+            # Get IClassFactory vtable
+            cf_vtable = ctypes.cast(class_factory, ctypes.POINTER(ctypes.POINTER(ctypes.c_void_p))).contents
+
+            # IClassFactory::CreateInstance (method 3)
+            CreateInstance = ctypes.WINFUNCTYPE(
+                ctypes.c_long,
+                ctypes.c_void_p,
+                ctypes.c_void_p,
+                ctypes.c_void_p,
+                ctypes.POINTER(ctypes.c_void_p),
+            )(cf_vtable[3])
+
+            # Create IDesktopWallpaper instance
+            instance = ctypes.c_void_p()
+            hr = CreateInstance(class_factory, None, ctypes.byref(IID_IDesktopWallpaper), ctypes.byref(instance))
+
+            # Release class factory
+            CF_Release = ctypes.WINFUNCTYPE(ctypes.c_ulong, ctypes.c_void_p)(cf_vtable[2])
+            CF_Release(class_factory)
+
+            if hr != 0 or not instance.value:
+                return False
+
+            # Get IDesktopWallpaper vtable
             vtable = ctypes.cast(instance, ctypes.POINTER(ctypes.POINTER(ctypes.c_void_p))).contents
-            QueryInterface = ctypes.WINFUNCTYPE(ctypes.c_long, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p)(
-                vtable[0]
-            )
+
             Release = ctypes.WINFUNCTYPE(ctypes.c_ulong, ctypes.c_void_p)(vtable[2])
             SetWallpaper = ctypes.WINFUNCTYPE(ctypes.c_long, ctypes.c_void_p, ctypes.c_wchar_p, ctypes.c_wchar_p)(
                 vtable[3]
             )
-            SetPosition = ctypes.WINFUNCTYPE(ctypes.c_long, ctypes.c_void_p, ctypes.c_int)(
-                vtable[10]
-            )
+            SetPosition = ctypes.WINFUNCTYPE(ctypes.c_long, ctypes.c_void_p, ctypes.c_int)(vtable[10])
             GetMonitorDevicePathAt = ctypes.WINFUNCTYPE(
                 ctypes.c_long, ctypes.c_void_p, ctypes.c_uint, ctypes.POINTER(ctypes.c_wchar_p)
             )(vtable[5])
@@ -720,25 +734,25 @@ class WallpaperService:
 
             SetPosition(instance, int(position_value))
 
+            success = True
             for idx in range(count.value):
                 monitor_id = ctypes.c_wchar_p()
                 hr = GetMonitorDevicePathAt(instance, idx, ctypes.byref(monitor_id))
                 if hr != 0:
                     continue
                 image_path = image_paths[idx % len(image_paths)]
-                hr = SetWallpaper(instance, monitor_id, str(image_path))
+                # Must use absolute path for SetWallpaper
+                abs_path = str(pathlib.Path(image_path).resolve())
+                hr = SetWallpaper(instance, monitor_id, abs_path)
                 if hr != 0:
-                    if monitor_id:
-                        CoTaskMemFree(monitor_id)
-                    Release(instance)
-                    return False
+                    success = False
                 if monitor_id:
-                    CoTaskMemFree(monitor_id)
+                    ole32.CoTaskMemFree(monitor_id)
 
             Release(instance)
-            return True
+            return success
         finally:
-            CoUninitialize()
+            ole32.CoUninitialize()
 
     def _get_duration(self, video_path: pathlib.Path) -> float:
         command = [

@@ -10,6 +10,6 @@
   "debug_enabled": true,
   "compat_mode": false,
   "debug_mode": true,
-  "multi_screen_mode": "per_monitor_pywin32",
+  "multi_screen_mode": "per_monitor_ctypes",
   "span_layout": "rl"
 }
