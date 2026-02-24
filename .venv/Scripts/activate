@@ -98,8 +98,8 @@ _OLD_VIRTUAL_PATH="$PATH"
 PATH="$VIRTUAL_ENV/Scripts:$PATH"
 export PATH
 
-if [ "xhtwallpaper" != x ] ; then
-    VIRTUAL_ENV_PROMPT="htwallpaper"
+if [ "xHTWallpaper" != x ] ; then
+    VIRTUAL_ENV_PROMPT="HTWallpaper"
 else
     VIRTUAL_ENV_PROMPT=$(basename "$VIRTUAL_ENV")
 fi

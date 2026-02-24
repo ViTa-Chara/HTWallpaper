@@ -28,7 +28,7 @@
 
 @for %%i in ("C:\Users\15105\CascadeProjects\video-wallpaper\HTWallpaper\.venv") do @set "VIRTUAL_ENV=%%~fi"
 
-@set "VIRTUAL_ENV_PROMPT=htwallpaper"
+@set "VIRTUAL_ENV_PROMPT=HTWallpaper"
 @if NOT DEFINED VIRTUAL_ENV_PROMPT (
     @for %%d in ("%VIRTUAL_ENV%") do @set "VIRTUAL_ENV_PROMPT=%%~nxd"
 )

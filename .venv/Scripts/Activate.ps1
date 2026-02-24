@@ -58,8 +58,8 @@ deactivate -nondestructive
 $VIRTUAL_ENV = $BASE_DIR
 $env:VIRTUAL_ENV = $VIRTUAL_ENV
 
-if ("htwallpaper" -ne "") {
-    $env:VIRTUAL_ENV_PROMPT = "htwallpaper"
+if ("HTWallpaper" -ne "") {
+    $env:VIRTUAL_ENV_PROMPT = "HTWallpaper"
 }
 else {
     $env:VIRTUAL_ENV_PROMPT = $( Split-Path $env:VIRTUAL_ENV -Leaf )
